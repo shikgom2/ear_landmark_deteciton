@@ -146,11 +146,11 @@ r = results[0]
 
 dataset.class_names[1] = 'ear'
 
-#x1, y1, x2, y2
+#Cropped x1, y1, x2, y2
 y1 = r['rois'][0][0] - 100
 x1 = r['rois'][0][1] - 100
-y2 = r['rois'][0][2] + 100
-x2 = r['rois'][0][3] + 100
+y2 = r['rois'][0][2] - 50
+x2 = r['rois'][0][3] - 50
 
 if(x1 < 0):
     x1 = 0
@@ -180,10 +180,17 @@ temp = X[0]
 temp = temp[None,:] # adjust the dimensions for the model
 prediction = model.predict(temp)
 
-for p in range(len(prediction[0])):     # adjust the landmark points for 224x224 image (they were normalized in range 0 to 1)
+image_y, image_x, image_z = cropped_np.shape
 
-    prediction[0][p] = int(prediction[0][p] * 224)
+prediction_x = list(range(0, 55))
+prediction_y = list(range(0, 55))
 
-put_landmarks(prediction[0], datatitle=date_title, single_img_path=cropped_resize_path)        # the function to drop landmark points on the image
+for p in range(int(len(prediction[0]) / 2)):     # adjust the landmark points for 224x224 image (they were normalized in range 0 to 1)
+
+    #prediction[0][p] = int(prediction[0][p] * 224)
+    prediction_x[p] = prediction[0][p] * image_x
+    prediction_y[p] = prediction[0][p + 55] * image_y
+
+put_landmarks(prediction_x, prediction_y, datatitle=date_title, single_img_path=cropped_path)        # the function to drop landmark points on the image
 
 print("Success!")
