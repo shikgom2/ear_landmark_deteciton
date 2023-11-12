@@ -10,7 +10,7 @@ Landmark Detection Model 다운후 루트에 저장
 
 https://drive.google.com/file/d/1dFQR4HQrfSVHWueJZh6c-pVWzIrs0bjl/view?usp=sharing
 
-
+실행방법
 ```
 conda env create -f ear_landmark_detection.yaml
 conda activate ear_project
